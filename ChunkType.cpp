@@ -1,22 +1,3 @@
-/*
-Write a ChunkType class with your implementation of PNG chunk types.
-
-Implement a constructor that takes an array of 4 bytes (uint8_t[4]) and validates them.
-Implement a constructor or static factory method that creates a ChunkType from a string.
-Implement operator << for stream output or a toString() method.
-Implement operator == for equality comparison
-
-Required methods:
-
-std::array<uint8_t, 4> bytes() const
-bool isValid() const
-bool isCritical() const
-bool isPublic() const
-bool isReservedBitValid() const
-bool isSafeToCopy() const
-*/
-
-
 #include <cstdint>
 #include <vector>
 #include <iostream>
