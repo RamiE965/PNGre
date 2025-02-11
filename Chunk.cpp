@@ -54,7 +54,7 @@ public:
     const ChunkType& chunktype() const { return chunktype_m; }
 
     Chunk(ChunkType chunktype, std::vector<uint8_t> data) 
-    : chunktype_m(chunktype) // already validated
+    : chunktype_m(chunktype)
     , data_m(data)
     , length_m(data.size())
     {
