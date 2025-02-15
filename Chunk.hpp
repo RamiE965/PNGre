@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstdint>
 #include <vector>
+#include <ostream>
 #include "ChunkType.hpp"
 
 class Chunk {
@@ -20,6 +21,10 @@ public:
     uint32_t length() const;
     uint32_t crc() const;
     const ChunkType& chunktype() const;
-    std::vector<uint8_t>& data() const;
+    const std::vector<uint8_t>& data() const;
     Chunk(ChunkType chunktype, std::vector<uint8_t> data);
+    std::vector<uint8_t> as_bytes() const;
+    std::string data_as_string() const;
+    friend std::ostream& operator<<(std::ostream&, const Chunk&);
+    Chunk(const std::vector<uint8_t>& bytes);
 };
