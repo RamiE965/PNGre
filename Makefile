@@ -1,7 +1,23 @@
+CXX = g++
+CXXFLAGS = -Wall -Wextra -std=c++17
+TARGET = chunk
+SRCS = ChunkType.cpp Chunk.cpp main.cpp
+OBJS = $(SRCS:.cpp=.o)
+
+.PHONY: all build run clean
+
 all: build run
 
-build:
-	g++ ChunkType.cpp Chunk.cpp -o chunk -std=c++17
+build: $(TARGET)
 
-run:
-	./chunk
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $(TARGET)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+run: $(TARGET)
+	./$(TARGET)
+
+clean:
+	rm -f $(OBJS) $(TARGET)
