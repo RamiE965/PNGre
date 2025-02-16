@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17
 TARGET = chunk
-SRCS = ChunkType.cpp Chunk.cpp main.cpp
+SRCS = ChunkType.cpp Chunk.cpp main.cpp PNG.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 .PHONY: all build run clean

@@ -1,7 +1,10 @@
 #include "Chunk.hpp"
 #include "ChunkType.hpp"
+#include "PNG.hpp"
 #include <cassert>
 #include <sstream>
+#include <optional>
+#include <vector>
 
 // test macro
 #define RUN_TEST(test) \
@@ -204,6 +207,8 @@ void test_chunk_trait_impls() {
     assert(!chunk_string.empty());  // too basic!
 }
 
+// PNG tests
+
 int main() {
     try {
         // ChunkType tests
@@ -221,7 +226,13 @@ int main() {
         RUN_TEST(test_invalid_chunk_is_valid);
         RUN_TEST(test_chunk_type_string);
         RUN_TEST(test_chunk_type_trait_impls);
+    } catch(const std::exception& e) {
+        std::cerr << "ChunkType Test failed: " << e.what() << std::endl;
+        return 1;
+    }
+    std::cout << "===== ChunkType tests passed =====\n" << std::endl;
 
+    try {
         // Chunk tests
         RUN_TEST(test_new_chunk);
         RUN_TEST(test_valid_chunk_from_bytes);
@@ -232,10 +243,33 @@ int main() {
         RUN_TEST(test_chunk_crc);
         RUN_TEST(test_chunk_trait_impls);
     } catch(const std::exception& e) {
-        std::cerr << "Test failed: " << e.what() << std::endl;
+        std::cerr << "Chunk Test failed: " << e.what() << std::endl;
         return 1;
     }
+    std::cout << "===== Chunk tests passed =====\n" << std::endl;
     
-    std::cout << "All tests passed" << std::endl;
+    try {
+        // PNG tests
+        // RUN_TEST(test_from_chunks);
+        // RUN_TEST(test_valid_from_bytes);
+        // RUN_TEST(test_invalid_header);
+        // RUN_TEST(test_invalid_chunk);
+        // RUN_TEST(test_list_chunks);
+        // RUN_TEST(test_chunk_by_type);
+        // RUN_TEST(test_append_chunk);
+        // RUN_TEST(test_remove_first_chunk);
+        // RUN_TEST(test_png_from_image_file);
+        // RUN_TEST(test_as_bytes);
+        // RUN_TEST(test_png_trait_impls);
+    } catch(const std::exception& e) {
+        std::cerr << "PNG Test failed: " << e.what() << std::endl;
+        return 1;
+    }
+    std::cout << "===== PNG tests passed =====\n" << std::endl;
+    
+    std::cout << "===================================\n"
+          << "All tests passed\n"
+          << "===================================\n" 
+          << std::endl;
     return 0;
 }
