@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <cstdint>
+#include <optional>
 #include "Chunk.hpp"
 
 class PNG {
@@ -10,8 +11,17 @@ private:
     const size_t REMAINDER = 12;
     
 public:
-    const std::vector<uint8_t> STANDARD_HEADER {137, 80, 78, 71, 13, 10, 26, 10};
+    static const std::vector<uint8_t> STANDARD_HEADER;
     
     PNG(std::vector<uint8_t>);
     PNG(std::vector<Chunk>);
+
+    const std::vector<Chunk>& chunks() const;
+    const std::vector<uint8_t>& header() const;
+    void append_chunk(Chunk);
+    Chunk remove_first_chunk(ChunkType);
+    const std::vector<uint8_t> as_bytes() const;
+    std::optional<Chunk> chunk_by_type(const ChunkType& type) const;
+
+    friend std::ostream& operator<<(std::ostream&, const PNG&);
 };

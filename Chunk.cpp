@@ -60,7 +60,7 @@ std::string Chunk::data_as_string() const {
 // 4. CRC
 std::vector<uint8_t> Chunk::as_bytes() const {
     // PNG File Signature
-    std::vector<uint8_t> bytes {137, 80, 78, 71, 13, 10, 26, 10};
+    std::vector<uint8_t> bytes;
     
     // Chunk length, uint8_t so we only push 8 bits at a time
     bytes.push_back((length_m >> 24) & 0xFF);
