@@ -2,7 +2,7 @@ CXX = g++
 CXXFLAGS = -Wall -Wextra -std=c++17 -Isrc
 
 # Main program
-TARGET = chunk
+TARGET = pngre
 SRCS = src/ChunkType.cpp src/Chunk.cpp src/PNG.cpp src/main.cpp
 OBJS = $(SRCS:.cpp=.o)
 
