@@ -2,3 +2,4 @@ chunk
 *.o
 .vscode
 *.png
+.DS_Store

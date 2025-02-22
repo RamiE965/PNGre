@@ -6,7 +6,7 @@
 #include "Chunk.hpp"
 #include "PNG.hpp"
 
-PNG generate_png(std::string_view path)
+PNG generate_png(std::string path)
 {
     // attempt to open the file in binary mode
     std::ifstream image_file(path, std::ios::binary);
@@ -47,7 +47,7 @@ void handle_encode(std::vector<std::string_view> input)
     }
 
     // construct PNG object
-    PNG image = generate_png(input[1]);
+    PNG image = generate_png(std::string(input[1]));
 
     // validate chunktype, and append new chunk
     auto chunktype = ChunkType::fromStr(input[2]);
@@ -63,12 +63,12 @@ void handle_encode(std::vector<std::string_view> input)
         throw std::invalid_argument("Invalid ChunkType!");
     }
 
-    std::ofstream output_file(input[1], std::ios::binary);
+    std::ofstream output_file(std::string(input[1]), std::ios::binary);
     auto bytes = image.as_bytes();
     output_file.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
     output_file.close();
 
-    std::cout << "Encoded: " << input[3] << " into " << input[2] << " file successfully!" << std::endl;
+    std::cout << "Encoded: '" << input[3] << "' into " << input[2] << " file successfully!" << std::endl;
 }
 
 /* 
@@ -86,7 +86,7 @@ void handle_decode(std::vector<std::string_view> input)
     }
 
     // construct PNG object
-    PNG image = generate_png(input[1]);
+    PNG image = generate_png(std::string(input[1]));
 
     // validate chunktype
     auto chunktype = ChunkType::fromStr(input[2]);
@@ -108,18 +108,67 @@ void handle_decode(std::vector<std::string_view> input)
     }
     else
     {
-        std::cout << "No message matching " << input[2] << " ChunkType in provided image." << std::endl;
+        std::cout << "No message matching '" << input[2] << "' ChunkType in provided image." << std::endl;
     }
 }
 
 void handle_remove(std::vector<std::string_view> input)
 {
-    std::cout << input[0] << std::endl;
+    if (input.size() < 3)
+    {
+        throw std::invalid_argument("Invalid number of arguments for remove. Usability: ./pngre remove ./<image_name>.png <chunktype>");
+    }
+
+    // construct PNG object
+    PNG image = generate_png(std::string(input[1]));
+
+    // validate chunktype
+    auto chunktype = ChunkType::fromStr(input[2]);
+    std::optional<Chunk> matching_chunk;
+
+    if (chunktype.is_valid()) 
+    {
+        // get first matching chunk by type
+        matching_chunk = image.chunk_by_type(chunktype);   
+    }
+    else
+    {
+        throw std::invalid_argument("Invalid ChunkType!");
+    }
+    
+    if (matching_chunk.has_value())
+    {
+        // remove the first matching message
+        image.remove_first_chunk(chunktype);
+
+        // save to file
+        std::ofstream output_file(std::string(input[1]), std::ios::binary);
+        auto bytes = image.as_bytes();
+        output_file.write(reinterpret_cast<const char*>(bytes.data()), bytes.size());
+        output_file.close();
+
+        std::cout << "Removed: `" << matching_chunk.value().data_as_string() << "` from " << input[1] << " image!" << std::endl;
+    }
+    else
+    {
+        std::cout << "No message matching '" << input[2] << "' ChunkType in provided image." << std::endl;
+    }
 }
 
 void handle_print(std::vector<std::string_view> input)
 {
-    std::cout << input[0] << std::endl;
+    if (input.size() < 2)
+    {
+        throw std::invalid_argument("Invalid number of arguments for print. Usability: ./pngre print ./<image_name>.png");
+    }
+
+    // construct PNG object
+    PNG image = generate_png(std::string(input[1]));
+
+    for (size_t i = 0; i < image.chunks().size(); i++)
+    {
+        std::cout << "Chunk [" << i << "]: " << image.chunks()[i] << std::endl;
+    }
 }
 
 int main(int argc, char** argv) 
