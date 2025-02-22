@@ -18,7 +18,6 @@ Build using Make
 ```
 Make
 ```
-Use `./pngre` to run the program or `./run_tests` to run unit tests.
 
 ## Usage
 ```
