@@ -1,5 +1,5 @@
-# PNG:re
-PNGre is a command-line utility for encoding and decoding hidden messages within PNG files.
+# PNG::re
+PNG::re is a command-line utility for encoding and decoding hidden messages within PNG files.
 
 ## Features
 - Encode secret messages into PNG files
